@@ -1,7 +1,7 @@
-from typing import List
+from typing import Dict
 import pandas as pd
 
-def get_jobs_endpoint(page: int, perPage: int) -> List[dict]:
+def get_jobs_endpoint(page: int, perPage: int) -> Dict:
     # Load data from CSV files
     jobs_data = pd.read_csv('./database/jobs.csv')
     companies_data = pd.read_csv('./database/companies.csv')
@@ -26,4 +26,8 @@ def get_jobs_endpoint(page: int, perPage: int) -> List[dict]:
         'position_level', 'employment_type', 'technologies_used'
     ]]
 
-    return jobs.to_dict(orient="records")
+    # Return paginated jobs and total count
+    return {
+        "total_jobs": len(merged_data),
+        "jobs": jobs.to_dict(orient="records")
+    }

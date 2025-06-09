@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
+from typing import Dict
 from get_jobs import get_jobs_endpoint
 import os
 from dotenv import load_dotenv
@@ -23,5 +23,5 @@ app.add_middleware(
 )
 
 @app.get("/jobs")
-def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> List[dict]:
+def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> Dict:
     return get_jobs_endpoint(page, perPage)
