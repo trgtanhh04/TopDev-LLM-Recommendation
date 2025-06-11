@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="bookmark-col">
-          <svg width="24" height="24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="22" height="22" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
           </svg>
         </div>
@@ -69,35 +69,40 @@ export default {
 .job-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 12px;
 }
 .job-card {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  background: #fff;
+  background: #f4faff; /* Lighter blue */
+  transition: background 0.2s, box-shadow 0.2s;
   border-radius: 12px;
   box-shadow: 0 2px 8px #0001;
-  padding: 32px 32px 24px 32px;
+  padding: 16px 20px 12px 20px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
   position: relative;
 }
+.job-card:hover {
+  background: #e3f2fd; /* Slightly deeper blue on hover */
+  box-shadow: 0 4px 16px #0002;
+}
 .logo-col {
-  flex: 0 0 120px;
+  flex: 0 0 80px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-right: 32px;
+  margin-right: 24px; /* Increased space */
 }
 .job-logo {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   background: #f8f8f8;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 .info-col {
   flex: 1;
@@ -105,8 +110,8 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  padding-right: 48px; /* Add right padding for the icon */
   position: relative;
-  padding-right: 48px;
 }
 .info-main {
   display: flex;
@@ -115,7 +120,7 @@ export default {
   width: 100%;
 }
 .job-title {
-  font-size: 24px;
+  font-size: 18px;  /* Decreased from 22px */
   font-weight: bold;
   color: #222;
   display: block;
@@ -123,7 +128,7 @@ export default {
   text-align: left;
 }
 .company-name {
-  font-size: 16px;
+  font-size: 15px;
   color: #444;
   margin-bottom: 8px;
   text-align: left;
@@ -131,7 +136,7 @@ export default {
 .meta-row {
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 14px;
   color: #222;
   margin-bottom: 4px;
   text-align: left;
@@ -151,7 +156,7 @@ export default {
   color: #222;
 }
 .address-row {
-  font-size: 15px;
+  font-size: 14px;
   color: #555;
   margin-bottom: 8px;
   text-align: left;
@@ -160,36 +165,42 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #eee;
-  padding-top: 12px;
-  margin-top: 8px;
+  align-items: flex-start;
+  border-top: 2px solid #eee;
+  padding-top: 8px;
+  margin-top: 6px;
   width: 100%;
 }
 .tech-list {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 .tech-badge {
   background: #e3f2fd;
   color: #1976d2;
-  padding: 6px 18px;
-  border-radius: 8px;
-  font-size: 16px;
-  margin-right: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-right: 2px;
   white-space: nowrap;
 }
 .date-posted {
   color: #888;
-  font-size: 16px;
-  min-width: 120px;
+  font-size: 13px;
+  min-width: 100px;
   text-align: right;
   margin-left: auto;
 }
 .bookmark-col {
   position: absolute;
-  right: 32px;
-  top: 32px;
-  cursor: pointer;
+  top: 5px;      /* Move icon to top, aligns with job title */
+  right: 5px;    /* Less space to right edge */
+  display: flex;
+  align-items: flex-start;
+}
+.bookmark-col svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
 }
 </style>
