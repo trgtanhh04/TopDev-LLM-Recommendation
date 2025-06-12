@@ -1,7 +1,7 @@
 <template>
   <div class="job-suggestion-container">
     <div class="header">Công việc phù hợp với bạn</div>
-    <div v-for="(job, idx) in jobs" :key="idx" class="job-suggestion-card">
+    <div v-for="(job, idx) in suggestedJobs" :key="idx" class="job-suggestion-card">
       <div class="logo">
         <img :src="parseStringToArray(job.small_image)[0]" alt="logo" />
       </div>
@@ -29,20 +29,10 @@ import { parseStringToArray } from '../utils/parseStringToArray';
 
 export default {
   name: 'JobSuggestion',
-  data() {
-    return {
-      jobs: [],
-    };
-  },
-  async created() {
-    try {
-      const response = await fetch(`${process.env.VUE_APP_API_URL}/suggested-jobs?perPage=5`, {
-        headers: { accept: 'application/json' },
-      });
-      const data = await response.json();
-      this.jobs = data['suggested-jobs'];
-    } catch (error) {
-      console.error('Error fetching suggested jobs:', error);
+  props: {
+    suggestedJobs: {
+      type: Array,
+      required: true
     }
   },
   methods: {

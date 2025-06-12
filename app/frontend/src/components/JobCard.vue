@@ -49,22 +49,10 @@ import { parseStringToArray } from '../utils/parseStringToArray';
 
 export default {
   name: 'JobCard',
-  data() {
-    return {
-      jobs: [],
-    };
-  },
-  async created() {
-    try {
-      const response = await fetch(`${process.env.VUE_APP_API_URL}/jobs?page=1&perPage=10`, {
-        headers: {
-          accept: 'application/json',
-        },
-      });
-      const data = await response.json();
-      this.jobs = data.jobs;
-    } catch (error) {
-      console.error('Error fetching jobs:', error);
+  props: {
+    jobs: {
+      type: Array,
+      required: true
     }
   },
   methods: {
