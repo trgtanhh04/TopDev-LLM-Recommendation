@@ -99,7 +99,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 24px 0 0 0;
+  margin: 24px 0 32px 0;
   justify-content: center;
 }
 .paging-controls button {

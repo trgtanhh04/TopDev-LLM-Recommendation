@@ -17,8 +17,12 @@
             <span class="position-level">{{ parseStringToArray(job.position_level).join(', ') }}</span>
           </div>
           <div class="address-row">
-            <span>{{ parseStringToArray(job.address)[0] }}</span>
-            <span v-if="parseStringToArray(job.employment_type)[0]">({{ parseStringToArray(job.employment_type)[0] }})</span>
+            <span>
+              {{ parseStringToArray(job.address)[0] }}
+              <span v-if="parseStringToArray(job.employment_type)[0]">
+                &nbsp;({{ parseStringToArray(job.employment_type)[0] }})
+              </span>
+            </span>
           </div>
         </div>
         <div class="tech-row">
@@ -99,7 +103,7 @@ export default {
   box-shadow: 0 2px 8px #0001;
   padding: 16px 20px 12px 20px;
   width: 100%;
-  max-width: 820px;
+  max-width: 800px;
   margin: 0 auto;
   position: relative;
 }
