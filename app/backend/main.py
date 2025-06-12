@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
 from get_jobs import get_jobs_endpoint
+from get_suggested_jobs import get_suggested_jobs_endpoint
 
 app = FastAPI()
 
@@ -17,3 +18,7 @@ app.add_middleware(
 @app.get("/jobs")
 def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> Dict:
     return get_jobs_endpoint(page, perPage)
+
+@app.get("/suggested-jobs")
+def get_suggested_jobs(perPage: int = Query(5, ge=1)) -> Dict:
+    return get_suggested_jobs_endpoint(perPage)
