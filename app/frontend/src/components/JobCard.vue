@@ -20,7 +20,15 @@
         </div>
         <div class="tech-row">
           <div class="tech-list">
-            <span v-for="tech in parseStringToArray(job.technologies_used)" :key="tech" class="tech-badge">{{ tech }}</span>
+            <span
+              v-for="tech in limitedTechs(job.technologies_used)"
+              :key="tech"
+              class="tech-badge"
+            >{{ tech }}</span>
+            <span
+              v-if="isTechOverflow(job.technologies_used)"
+              class="tech-ellipsis"
+            >...</span>
           </div>
           <div class="date-posted">
             {{ parseStringToArray(job.date_posted)[0] }}
@@ -61,6 +69,14 @@ export default {
   },
   methods: {
     parseStringToArray,
+    limitedTechs(techs) {
+      const arr = this.parseStringToArray(techs);
+      return arr.slice(0, 4);
+    },
+    isTechOverflow(techs) {
+      const arr = this.parseStringToArray(techs);
+      return arr.length > 4;
+    },
   },
 };
 </script>
@@ -76,18 +92,18 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  background: #f4faff; /* Lighter blue */
+  background: #f4faff;
   transition: background 0.2s, box-shadow 0.2s;
   border-radius: 12px;
   box-shadow: 0 2px 8px #0001;
   padding: 16px 20px 12px 20px;
   width: 100%;
-  max-width: 800px;
+  max-width: 820px;
   margin: 0 auto;
   position: relative;
 }
 .job-card:hover {
-  background: #e3f2fd; /* Slightly deeper blue on hover */
+  background: #e3f2fd;
   box-shadow: 0 4px 16px #0002;
 }
 .logo-col {
@@ -95,7 +111,7 @@ export default {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-right: 24px; /* Increased space */
+  margin-right: 24px;
 }
 .job-logo {
   width: 80px;
@@ -110,7 +126,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-right: 48px; /* Add right padding for the icon */
+  padding-right: 32px;
   position: relative;
 }
 .info-main {
@@ -120,11 +136,11 @@ export default {
   width: 100%;
 }
 .job-title {
-  font-size: 18px;  /* Decreased from 22px */
+  font-size: 18px;
   font-weight: bold;
   color: #222;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   text-align: left;
 }
 .company-name {
@@ -174,6 +190,7 @@ export default {
 .tech-list {
   display: flex;
   gap: 4px;
+  align-items: center;
 }
 .tech-badge {
   background: #e3f2fd;
@@ -184,17 +201,24 @@ export default {
   margin-right: 2px;
   white-space: nowrap;
 }
+.tech-ellipsis {
+  color: #1976d2;
+  font-weight: bold;
+  margin-left: 4px;
+  font-size: 16px;
+  background: none;
+}
 .date-posted {
   color: #888;
   font-size: 13px;
-  min-width: 100px;
   text-align: right;
-  margin-left: auto;
+  margin-left: 8px;
+  padding-right: 4px;
 }
 .bookmark-col {
   position: absolute;
-  top: 5px;      /* Move icon to top, aligns with job title */
-  right: 5px;    /* Less space to right edge */
+  top: 0px;
+  right: 0px;
   display: flex;
   align-items: flex-start;
 }
