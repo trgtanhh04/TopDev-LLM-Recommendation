@@ -1,5 +1,8 @@
 <template>
   <div class="job-list">
+    <div class="job-list-header">
+      {{ totalJobs }} việc làm IT
+    </div>
     <div v-for="job in jobs" :key="job.job_title" class="job-card">
       <div class="logo-col">
         <img :src="parseStringToArray(job.small_image)[0]" alt="Company Logo" class="job-logo" />
@@ -53,6 +56,10 @@ export default {
     jobs: {
       type: Array,
       required: true
+    },
+    totalJobs: {
+      type: Number,
+      required: true
     }
   },
   methods: {
@@ -75,6 +82,12 @@ export default {
   flex-direction: column;
   gap: 12px;
   padding: 12px;
+}
+.job-list-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: left;
 }
 .job-card {
   display: flex;
@@ -124,11 +137,11 @@ export default {
   width: 100%;
 }
 .job-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
   color: #222;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   text-align: left;
 }
 .company-name {
@@ -211,7 +224,7 @@ export default {
   align-items: flex-start;
 }
 .bookmark-col svg {
-  width: 22px;
+  width: 20px;
   height: 22px;
   stroke-width: 2;
 }

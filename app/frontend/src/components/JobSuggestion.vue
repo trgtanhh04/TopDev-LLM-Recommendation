@@ -1,6 +1,6 @@
 <template>
   <div class="job-suggestion-container">
-    <div class="header">Công việc phù hợp với bạn</div>
+    <div class="header">Có thể bạn sẽ thích</div>
     <div v-for="(job, idx) in suggestedJobs" :key="idx" class="job-suggestion-card">
       <div class="logo">
         <img :src="parseStringToArray(job.small_image)[0]" alt="logo" />
@@ -65,6 +65,7 @@ export default {
   padding: 16px 16px 12px 16px;
   border-bottom: 1px solid #eee;
   background: #e3f2fd;
+  text-align: left;
 }
 .job-suggestion-card {
   display: flex;
