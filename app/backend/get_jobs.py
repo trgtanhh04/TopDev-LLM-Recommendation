@@ -9,7 +9,7 @@ def get_jobs_endpoint(page: int, perPage: int) -> Dict:
     # Merge jobs.csv and companies.csv on company_name and name
     merged_data = pd.merge(
         jobs_data,
-        companies_data[['name', 'small_image']],
+        companies_data[['name', 'small_image', 'company_profile']],
         left_on='company_name',
         right_on='name',
         how='left'
@@ -23,7 +23,7 @@ def get_jobs_endpoint(page: int, perPage: int) -> Dict:
     # Select relevant columns
     jobs = paginated_data[[
         'job_title', 'company_name', 'salary', 'address', 'date_posted', 'small_image',
-        'position_level', 'employment_type', 'technologies_used'
+        'position_level', 'employment_type', 'technologies_used', 'company_profile'
     ]]
 
     # Return paginated jobs and total count
