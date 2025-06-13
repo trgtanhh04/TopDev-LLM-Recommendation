@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
 import JobList from './components/JobList.vue';
+import JobDetail from './components/JobDetail.vue';
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/viec-lam-it',
     name: 'Jobs',
     component: JobList,
+  },
+  {
+    path: '/job-detail',
+    name: 'JobDetail',
+    component: JobDetail,
   },
 ];
 
