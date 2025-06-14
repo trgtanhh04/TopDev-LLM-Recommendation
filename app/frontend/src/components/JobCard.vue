@@ -3,18 +3,18 @@
     <div class="job-list-header">
       {{ totalJobs }} việc làm IT
     </div>
-    <div
+    <router-link
       v-for="job in jobs"
       :key="job.job_title"
       class="job-card"
-      @click="$router.push({ 
-        path: '/job-detail', 
-        query: { 
-          job_title: job.job_title, 
-          company_name: job.company_name 
-        } 
-      })"
-      style="cursor:pointer"
+      :to="{
+        path: '/job-detail',
+        query: {
+          job_title: job.job_title,
+          company_name: job.company_name
+        }
+      }"
+      style="cursor:pointer; text-decoration: none; color: inherit;"
     >
       <div class="logo-col">
         <img :src="parseStringToArray(job.small_image)[0]" alt="Company Logo" class="job-logo" />
@@ -59,7 +59,7 @@
           </svg>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 

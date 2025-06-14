@@ -77,14 +77,26 @@
       </div>
     </div>
     <div class="desc">
-      <div v-for="(line, idx) in parsedDescription" :key="idx">
-        <template v-if="isSectionHeader(line)">
-          <b style="display:block;margin-top:12px;">{{ line }}</b>
-        </template>
-        <template v-else>
-          <span>{{ line }}</span>
-        </template>
-      </div>
+      <template v-for="(section, idx) in parsedSections" :key="idx">
+        <div class="desc-section" :class="section.key">
+          <div class="desc-section-header">
+            <span class="desc-section-icon" v-if="section.icon" v-html="section.icon"></span>
+            {{ section.title }}
+          </div>
+          <div class="desc-section-list">
+            <template v-for="(item, i) in section.items" :key="i">
+              <div
+                v-if="isNumberedLine(item)"
+                class="desc-no-bullet"
+              >{{ item }}</div>
+              <div
+                v-else
+                class="desc-list-item"
+              >{{ item }}</div>
+            </template>
+          </div>
+        </div>
+      </template>
     </div>
     <div class="company-profile" v-if="jobDetail.company_profile">
       <h4>Giới thiệu công ty</h4>
@@ -101,7 +113,7 @@
 <script>
 import LoadingPage from './LoadingPage.vue';
 import { parseStringToArray } from '../utils/parseStringToArray';
-import { parseJobDescription } from '../utils/parseJobDescription';
+import { parseJobDescriptionToSections } from '../utils/parseJobDescription';
 
 export default {
   components: { LoadingPage },
@@ -112,8 +124,11 @@ export default {
     };
   },
   computed: {
-    parsedDescription() {
-      return this.jobDetail ? parseJobDescription(this.jobDetail.job_description) : [];
+    parsedSections() {
+      if (!this.jobDetail) return [];
+      // Remove the "Quy trình phỏng vấn" section if present
+      return parseJobDescriptionToSections(this.jobDetail.job_description)
+        .filter(section => section.key !== 'interview');
     },
     companyLogo() {
       if (!this.jobDetail) return '';
@@ -123,9 +138,9 @@ export default {
   },
   methods: {
     parseStringToArray,
-    isSectionHeader(line) {
-      return /^[A-ZÀ-Ỹ].{0,30}$/.test(line) || /:$/.test(line);
-    }
+    isNumberedLine(line) {
+      return /^\d+\./.test(line);
+    },
   },
   async created() {
     const { job_title, company_name } = this.$route.query;
@@ -312,6 +327,55 @@ export default {
   margin-top: 32px;
   margin-bottom: 24px;
   white-space: pre-line;
+}
+.desc-section {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background: #f8fafd;
+  box-shadow: 0 1px 6px #0001;
+}
+.desc-section-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d32f2f;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.desc-section-icon {
+  font-size: 20px;
+}
+.desc-section.responsibility { background: #fff5f5; }
+.desc-section.skill { background: #f7fbff; }
+.desc-section.benefit { background: #fffef3; }
+.desc-section-list {
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.desc-list-item {
+  margin-left: 18px;
+  position: relative;
+  padding-left: 24px;
+}
+.desc-list-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #888;
+  font-weight: bold;
+}
+.desc-no-bullet {
+  margin-left: 0;
+  font-weight: bold;
+  color: #1976d2;
+  padding-left: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .company-profile {
   background: #f4faff;

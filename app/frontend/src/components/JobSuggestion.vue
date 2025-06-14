@@ -1,7 +1,19 @@
 <template>
   <div class="job-suggestion-container">
     <div class="header">Có thể bạn sẽ thích</div>
-    <div v-for="(job, idx) in suggestedJobs" :key="idx" class="job-suggestion-card">
+    <router-link
+      v-for="(job, idx) in suggestedJobs"
+      :key="idx"
+      class="job-suggestion-card"
+      :to="{
+        path: '/job-detail',
+        query: {
+          job_title: job.job_title,
+          company_name: job.company_name
+        }
+      }"
+      style="text-decoration: none; color: inherit; cursor: pointer;"
+    >
       <div class="logo">
         <img :src="parseStringToArray(job.small_image)[0]" alt="logo" />
       </div>
@@ -20,7 +32,7 @@
           >...</span>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
