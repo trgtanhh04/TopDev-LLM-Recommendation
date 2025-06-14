@@ -98,10 +98,57 @@
         </div>
       </template>
     </div>
-    <div class="company-profile" v-if="jobDetail.company_profile">
-      <h4>Giới thiệu công ty</h4>
-      <div v-for="(line, idx) in parseStringToArray(jobDetail.company_profile)" :key="idx">
-        {{ line }}
+    <div class="company-section">
+      <div class="company-header">
+        <div class="company-title">Thông tin về {{ jobDetail.company_name }}</div>
+        <a
+          v-if="jobDetail.company_url"
+          :href="parseStringToArray(jobDetail.company_url)[0]"
+          target="_blank"
+          rel="noopener"
+          class="company-link"
+        >{{ parseStringToArray(jobDetail.company_url)[0] }}</a>
+      </div>
+      <div class="company-meta-row">
+        <div class="info-company-block">
+          <div class="info-icon">🏢</div>
+          <div>
+            <div class="info-label">Ngành nghề</div>
+            <div class="info-value">{{ parseStringToArray(jobDetail.industry)[0] }}</div>
+          </div>
+        </div>
+        <div class="info-company-block">
+          <div class="info-icon">👥</div>
+          <div>
+            <div class="info-label">Quy mô công ty</div>
+            <div class="info-value">{{ parseStringToArray(jobDetail.company_size)[0] }}</div>
+          </div>
+        </div>
+        <div class="info-company-block">
+          <div class="info-icon">🏳️</div>
+          <div>
+            <div class="info-label">Quốc tịch công ty</div>
+            <div class="info-value">{{ parseStringToArray(jobDetail.company_nationality)[0] }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="company-profile-block">
+        <h4>Giới thiệu công ty</h4>
+        <div class="company-profile-paragraph">
+          {{ parseCompanyProfile(jobDetail.company_profile) }}
+        </div>
+      </div>
+      <div
+        v-if="parseStringToArray(jobDetail.image_galleries).filter(img => img && img.trim()).length"
+        class="company-gallery"
+      >
+        <div
+          v-for="(img, idx) in parseStringToArray(jobDetail.image_galleries).filter(img => img && img.trim())"
+          :key="idx"
+          class="company-gallery-img"
+        >
+          <img :src="img" alt="Ảnh công ty" />
+        </div>
       </div>
     </div>
   </div>
@@ -114,6 +161,7 @@
 import LoadingPage from './LoadingPage.vue';
 import { parseStringToArray } from '../utils/parseStringToArray';
 import { parseJobDescriptionToSections } from '../utils/parseJobDescription';
+import { parseCompanyProfile } from '../utils/parseCompanyProfile';
 
 export default {
   components: { LoadingPage },
@@ -138,6 +186,7 @@ export default {
   },
   methods: {
     parseStringToArray,
+    parseCompanyProfile,
     isNumberedLine(line) {
       return /^\d+\./.test(line);
     },
@@ -308,6 +357,12 @@ export default {
   gap: 10px;
   min-width: 180px;
 }
+.info-company-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 300px;
+}
 .info-icon {
   font-size: 22px;
   margin-right: 6px;
@@ -377,9 +432,93 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.company-profile {
-  background: #f4faff;
+.company-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px #0001;
+  padding: 24px 28px 18px 28px;
+  margin-top: 32px;
+}
+.company-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.company-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+.company-link {
+  color: #1976d2;
+  font-size: 15px;
+  text-decoration: underline;
+  margin-left: 16px;
+  word-break: break-all;
+}
+.company-meta-row {
+  display: flex;
+  gap: 110px;
+  margin-bottom: 18px;
+  margin-top: 8px;
+  padding: 10px 0 24px 0;
+  justify-content: flex-start;
+}
+.company-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 200px;
+  gap: 0;
+}
+.company-meta-icon {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+.company-meta-label {
+  font-weight: bold;
+  color: #222;
+  font-size: 17px;
+  margin-bottom: 2px;
+}
+.company-meta-value {
+  font-size: 17px;
+  color: #444;
+  margin-top: 2px;
+  font-weight: 500;
+}
+.company-profile-block {
+  margin-bottom: 18px;
+}
+.company-profile-block h4 {
+  margin-bottom: 8px;
+  color: #d32f2f;
+}
+.company-gallery {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.company-gallery-img img {
+  width: 260px;
+  height: 170px;
+  object-fit: cover;
   border-radius: 8px;
-  padding: 16px;
+  background: #f8f8f8;
+  box-shadow: 0 1px 6px #0001;
+}
+.company-profile-paragraph {
+  margin-bottom: 8px;
+  line-height: 1.7;
+  color: #222;
+  white-space: pre-line;
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
