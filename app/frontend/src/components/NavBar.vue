@@ -9,10 +9,13 @@
         <li><router-link to="/viec-lam-it">Việc làm</router-link></li>
         <li><router-link to="/cong-ty">Công ty</router-link></li>
         <li><router-link to="/cong-cu">Công cụ</router-link></li>
-        <li><router-link to="/blog-it">Blog IT</router-link></li>
       </ul>
       <div class="nav-actions">
-        <button class="google-login-btn" @click="handleGoogleLogin">
+        <template v-if="userName">
+          <span>Xin chào, {{ userName }}</span>
+          <button class="logout-btn" @click="handleLogout">Đăng xuất</button>
+        </template>
+        <button v-else class="google-login-btn" @click="handleGoogleLogin">
           <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-icon" />
           Đăng nhập
         </button>
@@ -22,16 +25,64 @@
 </template>
 
 <script>
+import { jwtDecode } from "jwt-decode";
+import { useToast } from "vue-toastification";
+
 export default {
-  name: 'NavBar',
+  name: "NavBar",
+  data() {
+    return {
+      userName: null,
+      toast: null,
+    };
+  },
+  created() {
+    // Get the toast instance for use in methods
+    this.toast = useToast();
+    this.checkLogin();
+  },
   methods: {
     handleGoogleLogin() {
-      // Use the backend URL from .env
-      const backendUrl = process.env.VUE_APP_API_URL || 'http://localhost:8000';
-      console.log("Redirecting to:", `${backendUrl}/auth/google/login`);
-      window.location.href = `${backendUrl}/auth/google/login`;
-    }
-  }
+      const backendUrl = process.env.VUE_APP_API_URL || "http://localhost:8000";
+      const next = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `${backendUrl}/auth/google/login?next=${next}`;
+    },
+    handleLogout() {
+      localStorage.removeItem("jwt_token");
+      this.userName = null;
+      this.toast.success("Đăng xuất thành công!");
+      this.$router.push("/");
+    },
+    checkLogin() {
+      let token = localStorage.getItem("jwt_token");
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("token")) {
+        token = urlParams.get("token");
+        localStorage.setItem("jwt_token", token);
+        urlParams.delete("token");
+        const newUrl =
+          window.location.pathname +
+          (urlParams.toString() ? "?" + urlParams.toString() : "");
+        window.history.replaceState({}, document.title, newUrl);
+        this.toast.success("Đăng nhập thành công!");
+      }
+      if (token) {
+        try {
+          const payload = jwtDecode(token);
+          this.userName = payload.name;
+        } catch (e) {
+          this.userName = null;
+        }
+      } else {
+        this.userName = null;
+      }
+    },
+  },
+  watch: {
+    $route() {
+      this.checkLogin();
+    },
+  },
 };
 </script>
 
@@ -118,5 +169,22 @@ export default {
 .google-icon {
   width: 20px;
   height: 20px;
+}
+
+.logout-btn {
+  margin-left: 12px;
+  background: #fff;
+  border: 1px solid #e53935;
+  color: #e53935;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background: #ffebee;
 }
 </style>

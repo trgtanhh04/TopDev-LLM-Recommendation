@@ -12,10 +12,11 @@ import os
 
 app = FastAPI()
 
-GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "http://localhost:8000/auth/google/callback")
+GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI")
+ALLOW_ORIGINS = os.getenv("ALLOW_ORIGINS").split(",")
 
 # Determine cookie settings based on redirect URI scheme
-if GOOGLE_REDIRECT_URI.startswith("https"):
+if GOOGLE_REDIRECT_URI and GOOGLE_REDIRECT_URI.startswith("https"):
     COOKIE_SAMESITE = "none"
     COOKIE_SECURE = True
 else:
@@ -31,7 +32,7 @@ app.add_middleware(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOW_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

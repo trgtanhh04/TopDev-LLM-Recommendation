@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Query
 from fastapi.responses import RedirectResponse, JSONResponse
 from authlib.integrations.starlette_client import OAuth
 import os
@@ -13,11 +13,11 @@ router = APIRouter()
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:8080")
-GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "http://localhost:8000/auth/google/callback")
+GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI")
 JWT_SECRET = os.getenv("JWT_SECRET", "your_jwt_secret")
 JWT_ALGORITHM = "HS256"
 USERS_CSV = os.path.join(os.path.dirname(__file__), "database", "users.csv")
+ALLOW_ORIGINS = os.getenv("ALLOW_ORIGINS").split(",")
 
 oauth = OAuth()
 oauth.register(
@@ -49,20 +49,20 @@ def add_user(email, name):
     return {"email": email, "name": name}
 
 @router.get('/auth/google/login')
-async def login_via_google(request: Request):
+async def login_via_google(request: Request, next: str = Query("/")):
+    # Pass 'next' as the OAuth state parameter
     return await oauth.google.authorize_redirect(
         request,
         GOOGLE_REDIRECT_URI,
-        prompt="select_account"
+        prompt="select_account",
+        state=next
     )
 
 @router.get('/auth/google/callback')
-async def auth_google_callback(request: Request):
+async def auth_google_callback(request: Request, state: str = Query("/")):
     try:
         token = await oauth.google.authorize_access_token(request)
-        print("Token:", token)
         user = None
-        # Try to parse id_token, fallback to userinfo, fallback to token itself
         try:
             user = await oauth.google.parse_id_token(request, token)
         except Exception as e:
@@ -71,18 +71,15 @@ async def auth_google_callback(request: Request):
             user = token["userinfo"]
         if not user and "id_token" in token:
             user = jwt.decode(token["id_token"], options={"verify_signature": False})
-        print("User:", user)
         email = user.get("email") if user else None
         name = user.get("name") if user else None
         if not email:
             return JSONResponse({"error": "No email found in user info"}, status_code=400)
 
-        # Check/add user in CSV
         db_user = get_user_by_email(email)
         if not db_user:
             db_user = add_user(email, name)
 
-        # Generate JWT token
         payload = {
             "sub": email,
             "name": name,
@@ -90,9 +87,15 @@ async def auth_google_callback(request: Request):
         }
         jwt_token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
-        # Redirect to frontend with token
-        response = RedirectResponse(f"{FRONTEND_URL}/?token={jwt_token}")
-        return response
+        # Use ALLOW_ORIGINS for redirect security
+        if state.startswith("http://") or state.startswith("https://"):
+            if not any(state.startswith(origin) for origin in ALLOW_ORIGINS):
+                state = "/"
+            redirect_url = f"{state}?token={jwt_token}"
+        else:
+            redirect_url = f"{ALLOW_ORIGINS[0]}{state}?token={jwt_token}"
+
+        return RedirectResponse(redirect_url)
     except Exception as e:
         print("Error in auth_google_callback:", e)
         return JSONResponse({"error": str(e)}, status_code=400)
