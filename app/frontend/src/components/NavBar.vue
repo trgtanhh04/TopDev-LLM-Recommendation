@@ -43,8 +43,9 @@ export default {
   },
   methods: {
     handleGoogleLogin() {
-      const backendUrl = process.env.VUE_APP_API_URL || "http://localhost:8000";
-      const next = encodeURIComponent(window.location.pathname + window.location.search);
+      const backendUrl = process.env.VUE_APP_API_URL;
+      // Use full URL, not just path
+      const next = encodeURIComponent(window.location.origin + window.location.pathname + window.location.search);
       window.location.href = `${backendUrl}/auth/google/login?next=${next}`;
     },
     handleLogout() {

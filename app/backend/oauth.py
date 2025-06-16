@@ -83,7 +83,7 @@ async def auth_google_callback(request: Request, state: str = Query("/")):
         payload = {
             "sub": email,
             "name": name,
-            "exp": datetime.utcnow() + timedelta(days=7)
+            "exp": datetime.utcnow() + timedelta(days=60)
         }
         jwt_token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
@@ -91,9 +91,15 @@ async def auth_google_callback(request: Request, state: str = Query("/")):
         if state.startswith("http://") or state.startswith("https://"):
             if not any(state.startswith(origin) for origin in ALLOW_ORIGINS):
                 state = "/"
-            redirect_url = f"{state}?token={jwt_token}"
+            if "?" in state:
+                redirect_url = f"{state}&token={jwt_token}"
+            else:
+                redirect_url = f"{state}?token={jwt_token}"
         else:
-            redirect_url = f"{ALLOW_ORIGINS[0]}{state}?token={jwt_token}"
+            if "?" in state:
+                redirect_url = f"{ALLOW_ORIGINS[0]}{state}&token={jwt_token}"
+            else:
+                redirect_url = f"{ALLOW_ORIGINS[0]}{state}?token={jwt_token}"
 
         return RedirectResponse(redirect_url)
     except Exception as e:
