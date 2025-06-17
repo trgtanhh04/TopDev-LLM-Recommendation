@@ -2,12 +2,15 @@ from dotenv import load_dotenv
 load_dotenv()
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from typing import Dict
 from get_jobs import get_jobs_endpoint
 from get_suggested_jobs import get_suggested_jobs_endpoint
 from get_job_detail import get_job_detail_endpoint
 from oauth import router as oauth_router
+from upload_cv import router as upload_cv_router
+from dev_get_token import router as dev_get_token_router
 import os
 
 app = FastAPI()
@@ -38,7 +41,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/docs")
+
 app.include_router(oauth_router)
+app.include_router(upload_cv_router)
+app.include_router(dev_get_token_router)
 
 @app.get("/jobs")
 def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> Dict:

@@ -5,9 +5,9 @@ from fastapi import APIRouter, Request, Query
 from fastapi.responses import RedirectResponse, JSONResponse
 from authlib.integrations.starlette_client import OAuth
 import os
-import csv
 import jwt
 from datetime import datetime, timedelta
+from supabase_helpers import get_user_by_email, add_user
 
 router = APIRouter()
 
@@ -16,7 +16,6 @@ GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI")
 JWT_SECRET = os.getenv("JWT_SECRET", "your_jwt_secret")
 JWT_ALGORITHM = "HS256"
-USERS_CSV = os.path.join(os.path.dirname(__file__), "database", "users.csv")
 ALLOW_ORIGINS = os.getenv("ALLOW_ORIGINS").split(",")
 
 oauth = OAuth()
@@ -27,26 +26,6 @@ oauth.register(
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs={'scope': 'openid email profile'},
 )
-
-def get_user_by_email(email):
-    if not os.path.exists(USERS_CSV):
-        return None
-    with open(USERS_CSV, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            if row["email"].lower() == email.lower():
-                return row
-    return None
-
-def add_user(email, name):
-    file_exists = os.path.exists(USERS_CSV)
-    with open(USERS_CSV, "a", newline='', encoding='utf-8') as csvfile:
-        fieldnames = ["email", "name"]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow({"email": email, "name": name})
-    return {"email": email, "name": name}
 
 @router.get('/auth/google/login')
 async def login_via_google(request: Request, next: str = Query("/")):
