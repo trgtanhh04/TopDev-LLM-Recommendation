@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, APIRouter, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
@@ -11,6 +11,8 @@ from get_job_detail import get_job_detail_endpoint
 from oauth import router as oauth_router
 from upload_cv import router as upload_cv_router
 from dev_get_token import router as dev_get_token_router
+from rcm_job_from_cv import process_cv_logic
+from config.config import MONGO_URL
 import os
 
 app = FastAPI()
@@ -60,3 +62,9 @@ def get_suggested_jobs(perPage: int = Query(5, ge=1)) -> Dict:
 @app.get("/job-detail")
 def get_job_detail(job_title: str, company_name: str) -> Dict:
     return get_job_detail_endpoint(job_title, company_name)
+
+@app.post("/process_cv")
+async def process_cv(file: UploadFile = File(...)):
+    return await process_cv_logic(file)
+
+# uvicorn main:app --reload
