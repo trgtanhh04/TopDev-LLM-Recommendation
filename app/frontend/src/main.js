@@ -21,3 +21,5 @@ app.use(Toast, {
 });
 
 app.mount('#app');
+
+// npm run serve

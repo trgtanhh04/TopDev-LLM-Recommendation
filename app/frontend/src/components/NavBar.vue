@@ -8,7 +8,7 @@
         <li><router-link to="/">Trang chủ</router-link></li>
         <li><router-link to="/viec-lam-it">Việc làm</router-link></li>
         <li><router-link to="/cong-ty">Công ty</router-link></li>
-        <li><router-link to="/cong-cu">Công cụ</router-link></li>
+        <li><router-link to="/process_cv">Tìm việc làm</router-link></li>
       </ul>
       <div class="nav-actions">
         <template v-if="userName">
