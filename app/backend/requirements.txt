@@ -19,3 +19,4 @@ langchain-openai==0.3.18
 faiss-cpu==1.11.0
 tqdm==4.67.1
 requests==2.32.3
+httpx>=0.28.1
