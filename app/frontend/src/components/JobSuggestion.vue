@@ -20,16 +20,14 @@
       <div class="info">
         <div class="job-title">{{ job.job_title }}</div>
         <div class="company">{{ job.company_name }}</div>
-        <div v-if="parseStringToArray(job.technologies_used).length" class="tags">
-          <span
-            v-for="tag in limitedTechs(job.technologies_used)"
-            :key="tag"
-            class="tag"
-          >{{ tag }}</span>
-          <span
-            v-if="isTechOverflow(job.technologies_used)"
-            class="tag ellipsis"
-          >...</span>
+        <div class="tags">
+          <template v-if="parseStringToArray(job.technologies_used).length">
+            <span
+              v-for="tag in parseStringToArray(job.technologies_used)"
+              :key="tag"
+              class="tag"
+            >{{ tag }}</span>
+          </template>
         </div>
       </div>
     </router-link>
@@ -49,14 +47,6 @@ export default {
   },
   methods: {
     parseStringToArray,
-    limitedTechs(techs) {
-      const arr = this.parseStringToArray(techs);
-      return arr.slice(0, 2);
-    },
-    isTechOverflow(techs) {
-      const arr = this.parseStringToArray(techs);
-      return arr.length > 2;
-    },
   },
 };
 </script>
@@ -103,32 +93,34 @@ export default {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 .job-title {
   font-weight: bold;
   font-size: 16px;
   color: #222;
   margin-bottom: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
   text-align: left;
   max-width: 250px;
+  word-break: break-word;
 }
 .company {
   font-size: 14px;
   color: #666;
   margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
   text-align: left;
   max-width: 250px;
+  word-break: break-word;
 }
 .tags {
   margin-top: 4px;
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 .tag {
@@ -138,12 +130,5 @@ export default {
   padding: 2px 10px;
   border-radius: 6px;
   white-space: nowrap;
-}
-.ellipsis {
-  font-weight: bold;
-  background: none;
-  color: #1976d2;
-  font-size: 16px;
-  padding: 0 4px;
 }
 </style>
