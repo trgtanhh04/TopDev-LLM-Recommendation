@@ -5,12 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from typing import Dict
-from get_jobs import get_jobs_endpoint
-from get_suggested_jobs import get_suggested_jobs_endpoint
-from get_job_detail import get_job_detail_endpoint
-from oauth import router as oauth_router
-from upload_cv import router as upload_cv_router
-from dev_get_token import router as dev_get_token_router
+from apis.get_jobs import get_jobs_endpoint
+from apis.get_suggested_jobs import get_suggested_jobs_endpoint
+from apis.get_job_detail import get_job_detail_endpoint
+from auth.oauth import router as oauth_router
 from rcm_job_from_cv import process_cv_logic
 from config.config import MONGO_URL
 import os
@@ -48,8 +46,6 @@ def root():
     return RedirectResponse(url="/docs")
 
 app.include_router(oauth_router)
-app.include_router(upload_cv_router)
-app.include_router(dev_get_token_router)
 
 @app.get("/jobs")
 def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> Dict:

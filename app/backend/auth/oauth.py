@@ -7,7 +7,7 @@ from authlib.integrations.starlette_client import OAuth
 import os
 import jwt
 from datetime import datetime, timedelta
-from supabase_helpers import get_user_by_email, add_user
+from auth.user import get_user_by_email, add_user
 
 router = APIRouter()
 
@@ -27,7 +27,7 @@ oauth.register(
     client_kwargs={'scope': 'openid email profile'},
 )
 
-@router.get('/auth/google/login')
+@router.get('/auth/google/login', include_in_schema=False)
 async def login_via_google(request: Request, next: str = Query("/")):
     # Pass 'next' as the OAuth state parameter
     return await oauth.google.authorize_redirect(
@@ -37,7 +37,7 @@ async def login_via_google(request: Request, next: str = Query("/")):
         state=next
     )
 
-@router.get('/auth/google/callback')
+@router.get('/auth/google/callback', include_in_schema=False)
 async def auth_google_callback(request: Request, state: str = Query("/")):
     try:
         token = await oauth.google.authorize_access_token(request)
