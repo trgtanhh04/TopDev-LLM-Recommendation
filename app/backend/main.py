@@ -63,4 +63,13 @@ def get_job_detail(job_title: str, company_name: str) -> Dict:
 async def process_cv(file: UploadFile = File(...)):
     return await process_cv_logic(file)
 
+@app.post('/give_advice')
+async def give_advice(cv_info: Dict, job_info: Dict):
+    from giveAdvice.advice_generator import get_advice_from_cv_and_job
+    try:
+        advice = get_advice_from_cv_and_job(cv_info, job_info)
+        return advice
+    except Exception as e:
+        return {"error": str(e)}
+
 # uvicorn main:app --reload
