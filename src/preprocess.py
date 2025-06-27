@@ -10,7 +10,7 @@ import sys
 
 load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from config.config import OPEN_API_KEY, LLM_MODEL_NAME
+from app.backend.config.config import OPEN_API_KEY, LLM_MODEL_NAME
 
 def upload_csv(file_path: str):
     df = pd.read_csv(file_path)

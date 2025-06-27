@@ -8,13 +8,14 @@ import sys
 import re
 import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from config.config import MISTRAL_API_KEY, EMBEDDING_MODEL_NAME, MONGO_URL
+from app.backend.config.config import MISTRAL_API_KEY, EMBEDDING_MODEL_NAME, MONGO_URL
 
 client = MongoClient(MONGO_URL)
 db = client["tienanh"]
 job_collection = db["jobs"]
 
-df = pd.read_csv("E:/test-project/data/preprocessed_data.csv")
+df = pd.read_csv("E:\\ML-Final-Project\\app\\backend\\database\\jobs.csv")
+
 
 # process the DataFrame
 list_columns = [
@@ -56,7 +57,6 @@ df['address'] = df['address'].apply(fix_address)
 if "company_size" in df.columns:
     df["company_size"] = pd.to_numeric(df["company_size"], errors="coerce")
 
-df = df.drop(columns=['no'])
 
 # embedding + push to MongoDB
 def text_emb(job_title, technologies_used):
@@ -74,7 +74,7 @@ for _, row in tqdm(df.iterrows(), total=len(df), desc="Embedding & build docs"):
     docs.append(doc)
     time.sleep(1.1)
 
-# Insert documents into MongoDB
+# Insert documents into MongoDBE:\ML-Final-Project\src\mongodb_cloud.py
 if docs:
     job_collection.insert_many(docs)
     print(f"Inserted {len(docs)} documents into MongoDB.")
