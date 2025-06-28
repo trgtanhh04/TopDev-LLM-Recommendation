@@ -13,8 +13,7 @@
 - **Giao diện thân thiện**: Dễ dàng thao tác, hiển thị trực quan điểm số, kỹ năng, và gợi ý ngay bên cạnh JD.
 - **Bảo mật & riêng tư**: CV của bạn chỉ lưu trên trình duyệt (localStorage), không bị gửi lên server.
 
---
----
+----
 ## Demo dự án
 Dự án được deploy lên `render` để dễ dàng chia sẻ và dử dụng: [https://topdev-llm-recommendation-frontend.onrender.com](https://topdev-llm-recommendation-frontend.onrender.com)
 
