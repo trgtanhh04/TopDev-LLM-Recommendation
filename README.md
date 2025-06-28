@@ -13,6 +13,15 @@
 - **Giao diện thân thiện**: Dễ dàng thao tác, hiển thị trực quan điểm số, kỹ năng, và gợi ý ngay bên cạnh JD.
 - **Bảo mật & riêng tư**: CV của bạn chỉ lưu trên trình duyệt (localStorage), không bị gửi lên server.
 
+--
+---
+## Demo dự án
+Dự án được deploy lên `render` để dễ dàng chia sẻ và dử dụng: [https://topdev-llm-recommendation-frontend.onrender.com](https://topdev-llm-recommendation-frontend.onrender.com)
+
+Bạn có thể:
+- Xem danh sách công việc (JD)
+- Nhấn vào một công việc để vào trang chi tiết
+- Nhấn “So sánh với CV” để xem đánh giá từ AI
 ---
 
 ## Kiến trúc dự án
@@ -48,7 +57,7 @@ app/
 ### 1. Clone dự án
 
 ```bash
-git clone https://github.com/yourusername/cv-job-matcher.git
+git clone https://github.com/trgtanhh04/TopDev-LLM-Recommendation.git
 cd cv-job-matcher
 ```
 
@@ -83,21 +92,7 @@ npm run dev
 ### 4. Truy cập ứng dụng
 
 - Mở trình duyệt và truy cập [http://localhost:5173](http://localhost:5173) (hoặc port mà Vite/Vue báo).
-
 ---
-
-## Ví dụ sử dụng
-
-1. **Tải lên hoặc nhập CV** (dạng JSON).
-2. **Dán tin tuyển dụng** muốn so sánh.
-3. **Nhận kết quả:** 
-    - Điểm phù hợp CV-JD
-    - Danh sách kỹ năng còn thiếu
-    - Gợi ý khóa học/phát triển
-    - Phản hồi chi tiết từ AI
-
----
-
 ## Công nghệ sử dụng
 
 - **Frontend:** Vue 3, Composition API, Vite
@@ -105,12 +100,6 @@ npm run dev
 - **AI:** Mistral API (`mistral-medium`)
 - **Khác:** localStorage, RESTful API
 
----
-
-## Đóng góp & Liên hệ
-
-- Gửi ý kiến hoặc PR tại [github.com/yourusername/cv-job-matcher](https://github.com/yourusername/cv-job-matcher)
-- Liên hệ: your.email@example.com
 
 ---
 
