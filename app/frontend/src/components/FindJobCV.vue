@@ -131,6 +131,7 @@ export default {
       cvPreviewUrl: "", // URL tạo từ File API để xem trước PDF
       uploadError: "",
       recommendedJobs: [],
+      cvInfo: null,
     };
   },
   computed: {
@@ -210,8 +211,11 @@ export default {
         if (!res.ok) throw new Error("Tải lên thất bại");
         const result = await res.json();
         this.recommendedJobs = result.matched_jobs;
+        this.cvInfo = result.extracted_info; 
         // Lưu vào localStorage để khi back lại không mất gợi ý
         localStorage.setItem("recommendedJobs", JSON.stringify(this.recommendedJobs));
+        localStorage.setItem("cvInfo", JSON.stringify(this.cvInfo));
+
       } catch (err) {
         this.uploadError = err.message;
       } finally {

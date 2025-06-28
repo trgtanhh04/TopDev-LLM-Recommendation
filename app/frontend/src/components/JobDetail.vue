@@ -17,7 +17,28 @@
       </div>
       <div class="header-actions">
         <button class="apply-btn">Ứng tuyển ngay</button>
-        <button class="cv-btn">Tạo CV để ứng tuyển</button>
+        <button class="cv-btn" @click="compareWithCV">So sánh với CV</button>
+      </div>
+    </div>
+        <!--Advice Loading -->
+    <div v-if="adviceLoading" class="advice-box">
+      <p>🔍 Đang phân tích CV...</p>
+    </div>
+
+    <!-- Advice Result -->
+    <div v-if="advice" class="advice-box">
+      <h4>🎯 Kết quả so sánh CV với công việc</h4>
+      <p><strong>Điểm phù hợp:</strong> {{ advice.match_score }} / 100</p>
+      <p><strong>Kỹ năng còn thiếu:</strong> {{ advice.missing_skills?.join(', ') || 'Không có' }}</p>
+      <p><strong>Lời khuyên:</strong> {{ advice.summary }}</p>
+      <div v-if="advice.recommendations?.length">
+        <h5>📚 Khóa học gợi ý:</h5>
+        <ul>
+          <li v-for="(rec, index) in advice.recommendations" :key="index">
+            <strong>{{ rec.skill }}</strong>:
+            <a :href="rec.link" target="_blank" rel="noopener">{{ rec.course }}</a>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="main-row">
@@ -169,6 +190,9 @@ export default {
     return {
       jobDetail: null,
       loading: true,
+      advice: null,
+      adviceLoading: false,
+      adviceError: null,
     };
   },
   computed: {
@@ -184,34 +208,72 @@ export default {
       return arr.length ? arr[0] : '';
     }
   },
+  created() {
+    this.loadJobDetail(); // Gọi method bạn tự định nghĩa
+  },
   methods: {
     parseStringToArray,
     parseCompanyProfile,
     isNumberedLine(line) {
       return /^\d+\./.test(line);
     },
-  },
-  async created() {
-    const { job_title, company_name } = this.$route.query;
-    if (!job_title || !company_name) {
-      this.loading = false;
-      return;
-    }
-    try {
-      const url = `${process.env.VUE_APP_API_URL}/job-detail?job_title=${encodeURIComponent(job_title)}&company_name=${encodeURIComponent(company_name)}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      this.jobDetail = data.job_detail;
-    } catch (e) {
-      this.jobDetail = null;
-    } finally {
-      this.loading = false;
-    }
+    async compareWithCV() {
+      console.log('🔥 Button clicked!');
+      alert('Đã nhấn nút So sánh với CV');
+      this.adviceLoading = true;
+      this.advice = null;
+      this.adviceError = null;
+
+      try {
+        const cvInfoStr = localStorage.getItem("cvInfo");
+        if (!cvInfoStr) {
+          this.adviceError = "Không tìm thấy thông tin CV trong localStorage.";
+          return;
+        }
+
+        const cvInfo = JSON.parse(cvInfoStr);
+        const jobInfo = this.jobDetail;
+
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/give_advice`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ cv_info: cvInfo, job_info: jobInfo })
+        });
+
+        if (!res.ok) throw new Error("Lỗi từ server");
+
+        const result = await res.json();
+        this.advice = result;
+      } catch (err) {
+        this.adviceError = err.message;
+      } finally {
+        this.adviceLoading = false;
+      }
+    },
+    async loadJobDetail() {
+      const { job_title, company_name } = this.$route.query;
+      if (!job_title || !company_name) {
+        this.loading = false;
+        return;
+      }
+      try {
+        const url = `${process.env.VUE_APP_API_URL}/job-detail?job_title=${encodeURIComponent(job_title)}&company_name=${encodeURIComponent(company_name)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        this.jobDetail = data.job_detail;
+      } catch (e) {
+        this.jobDetail = null;
+      } finally {
+        this.loading = false;
+      }
+    },
   }
 };
 </script>
-
 <style scoped>
+
 .job-detail-card {
   background: #fff;
   border-radius: 12px;
@@ -521,4 +583,54 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Advice */
+.advice-box {
+  background: #f1f8e9;
+  border-left: 6px solid #8bc34a;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px #0001;
+  margin-top: 32px;
+  font-family: Arial, sans-serif;
+  color: #2e3a59;
+  max-width: 100%;
+}
+
+.advice-box h4 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #558b2f;
+}
+
+.advice-box h5 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #33691e;
+}
+
+.advice-box ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.advice-box li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.advice-error {
+  background: #ffebee;
+  border-left: 6px solid #d32f2f;
+  color: #b71c1c;
+  padding: 16px 20px;
+  margin-top: 24px;
+  border-radius: 10px;
+  font-weight: 500;
+  max-width: 100%;
+}
+
 </style>
+
