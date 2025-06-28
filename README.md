@@ -1,76 +1,119 @@
-# ĐỒ ÁN CUỐI KỲ MÔN HỌC MÁY
+# CV & Job Matcher Web App
 
-## 1. Mục tiêu
-
-- Nắm vững kiến thức về mô hình ngôn ngữ lớn (LLMs) thông qua việc áp dụng và huấn luyện các mô hình LLMs.
-- Hiểu và thực hiện các kỹ thuật tối ưu hóa như fine-tuning, transfer learning để điều chỉnh mô hình với tập dữ liệu cụ thể.
-- Phát triển kỹ năng xử lý ngôn ngữ tự nhiên và áp dụng vào các ứng dụng thực tế.
-- Đánh giá và phân tích hiệu suất của mô hình.
-
-## 2. Tiêu chí đánh giá
-
-- Ý tưởng và mục tiêu đề tài
-- Phân tích và xác định vấn đề
-- Mô hình giải pháp đề xuất
-- Thu thập và xử lý dữ liệu (**)
-- Thiết kế và triển khai mô hình
-- Huấn luyện mô hình (**)
-- Đánh giá hiệu suất mô hình
-- So sánh và tinh chỉnh mô hình (**)
-- Ứng dụng và demo thực tế
-- Mức độ tích hợp mô hình vào ứng dụng web
-- Giao diện và trải nghiệm người dùng
-- Tài liệu, báo cáo minh chứng
-- Thuyết trình và trả lời câu hỏi
-
-(**) Các mục được xem là đóng góp hay tính mới của đề tài.
+**CV & Job Matcher** là một nền tảng web giúp bạn **so sánh CV với tin tuyển dụng (JD)** để đánh giá mức độ phù hợp và nhận các lời khuyên phát triển kỹ năng dựa trên trí tuệ nhân tạo.
 
 ---
 
-## 3. Ý tưởng đề tài
+## Tính năng nổi bật
 
-**Tên đề tài:** Hệ thống gợi ý việc làm dựa trên LLM và Machine Learning
-
-**Các bước thực hiện:**
-
-1. **Thu thập dữ liệu:**  
-   - Crawl dữ liệu tuyển dụng từ website [https://topdev.vn/](https://topdev.vn/).
-2. **Tiền xử lý dữ liệu:**  
-   - Làm sạch, chuẩn hóa văn bản, xử lý các trường thông tin.
-3. **Áp dụng mô hình:**  
-   - Sử dụng LLM (Large Language Model) kết hợp các thuật toán Machine Learning.
-   - Fine-tune hoặc transfer learning để phù hợp với dữ liệu tuyển dụng.
-4. **Tinh chỉnh mô hình:**  
-   - Đánh giá, so sánh các mô hình, chọn giải pháp tối ưu, tinh chỉnh tham số.
-5. **Triển khai ứng dụng:**  
-   - Deploy mô hình lên một ứng dụng web (app) để người dùng nhập thông tin và nhận gợi ý việc làm phù hợp.
-6. **Đánh giá hiệu quả:**  
-   - Kiểm tra kết quả, so sánh với các phương pháp truyền thống, lấy phản hồi người dùng nếu có.
+- **Tải lên CV**: Nhập hoặc tải lên CV của bạn (dưới dạng JSON), chỉ cần thao tác một lần.
+- **Phân tích tin tuyển dụng (JD)**: Trích xuất và phân tích các yêu cầu, kỹ năng, kinh nghiệm từ JD.
+- **So sánh tự động**: Chấm điểm mức độ phù hợp giữa CV và JD, liệt kê các kỹ năng còn thiếu, gợi ý khóa học phát triển bản thân.
+- **Tư vấn AI**: Sử dụng AI (Mistral API, model `mistral-medium`) để đưa ra nhận xét, gợi ý chi tiết và cá nhân hóa.
+- **Giao diện thân thiện**: Dễ dàng thao tác, hiển thị trực quan điểm số, kỹ năng, và gợi ý ngay bên cạnh JD.
+- **Bảo mật & riêng tư**: CV của bạn chỉ lưu trên trình duyệt (localStorage), không bị gửi lên server.
 
 ---
 
-## 4. Cấu trúc thư mục dự án
+## Kiến trúc dự án
 
 ```
-ML-FINAL-PROJECT/
-├── app/                              # Triển khai app
-├── data/
-│   ├── job_url.csv                  # Danh sách URL tin tuyển dụng đã crawl
-│   ├── preprocessed_data.csv         # Dữ liệu đã làm sạch, tiền xử lý
-│   └── raw_data.csv                  # Dữ liệu gốc chưa xử lý
-├── docs/
-│   └── ml-project.pdf                # Báo cáo, tài liệu đồ án
-├── notebooks/
-│   ├── 1.0-data-collecting.ipynb     # Notebook thu thập dữ liệu
-│   ├── 2.0-preprocessing.ipynb       # Notebook tiền xử lý dữ liệu
-│   └── 3.0-data-modeling.ipynb       # Notebook xây dựng, huấn luyện, đánh giá mô hình
-└── src/              # Mã nguồn về LLM + ML
+app/
+├── backend/   # Flask API - Xử lý logic, kết nối Mistral AI
+└── frontend/  # Vue 3 - Giao diện người dùng, lưu trữ CV, trình bày kết quả
 ```
+
+### Backend (`app/backend`)
+
+- **Ngôn ngữ:** Python 3.x
+- **Framework:** Flask
+- **Endpoint chính:** `/give_advice`
+    - Nhận dữ liệu CV & JD, gửi prompt tới Mistral, trả về nhận xét, điểm số, kỹ năng còn thiếu, gợi ý học tập.
+- **Tích hợp AI:** Gọi API Mistral (`https://api.mistral.ai/v1/chat/completions`) để sinh phản hồi thông minh.
+
+### Frontend (`app/frontend`)
+
+- **Ngôn ngữ:** JavaScript (Vue 3, Composition API, Single File Component)
+- **Chức năng:**
+    - Cho phép người dùng nhập CV hoặc tải lên file JSON.
+    - Gửi CV & JD lên backend qua API `/give_advice`.
+    - Lưu thông tin CV vào **localStorage** để sử dụng lại cho các lần sau.
+    - Hiển thị kết quả so sánh, điểm số, kỹ năng còn thiếu, và gợi ý học tập trực tiếp bên cạnh phần JD.
+- **Trải nghiệm:** Tương tác mượt mà, realtime, dễ sử dụng cho cả người tìm việc lẫn HR.
 
 ---
 
-## 5. Hướng phát triển
+## Cài đặt & Khởi chạy
 
-- Tích hợp thêm các nguồn dữ liệu khác.
-- Mở rộng chức năng gợi ý theo kỹ năng, vị trí, mức lương...
-- Cải tiến giao diện người dùng, trải nghiệm sử dụng.
+### 1. Clone dự án
+
+```bash
+git clone https://github.com/yourusername/cv-job-matcher.git
+cd cv-job-matcher
+```
+
+### 2. Cài đặt Backend
+
+```bash
+cd app/backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Cấu hình biến môi trường:**
+- Tạo file `.env` và thêm:
+    ```
+    MISTRAL_API_KEY=your_mistral_api_key
+    ```
+
+**Chạy server:**
+```bash
+flask run
+```
+
+### 3. Cài đặt Frontend
+
+```bash
+cd ../../app/frontend
+npm install
+npm run dev
+```
+
+### 4. Truy cập ứng dụng
+
+- Mở trình duyệt và truy cập [http://localhost:5173](http://localhost:5173) (hoặc port mà Vite/Vue báo).
+
+---
+
+## Ví dụ sử dụng
+
+1. **Tải lên hoặc nhập CV** (dạng JSON).
+2. **Dán tin tuyển dụng** muốn so sánh.
+3. **Nhận kết quả:** 
+    - Điểm phù hợp CV-JD
+    - Danh sách kỹ năng còn thiếu
+    - Gợi ý khóa học/phát triển
+    - Phản hồi chi tiết từ AI
+
+---
+
+## Công nghệ sử dụng
+
+- **Frontend:** Vue 3, Composition API, Vite
+- **Backend:** Python, Flask, Requests, dotenv
+- **AI:** Mistral API (`mistral-medium`)
+- **Khác:** localStorage, RESTful API
+
+---
+
+## Đóng góp & Liên hệ
+
+- Gửi ý kiến hoặc PR tại [github.com/yourusername/cv-job-matcher](https://github.com/yourusername/cv-job-matcher)
+- Liên hệ: your.email@example.com
+
+---
+
+## ⚖️ Giấy phép
+
+MIT License
