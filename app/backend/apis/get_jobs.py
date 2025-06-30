@@ -1,5 +1,6 @@
 from typing import Dict
 import pandas as pd
+from .get_suggested_jobs import get_suggested_jobs_endpoint
 
 def get_jobs_endpoint(page: int, perPage: int) -> Dict:
     # Load data from CSV files
@@ -26,8 +27,12 @@ def get_jobs_endpoint(page: int, perPage: int) -> Dict:
         'position_level', 'employment_type', 'technologies_used', 'company_profile'
     ]]
 
-    # Return paginated jobs and total count
+    # Get suggested jobs (always perPage=5)
+    suggested_jobs = get_suggested_jobs_endpoint(perPage=5)["suggested-jobs"]
+
+    # Return paginated jobs, total count, and suggested jobs
     return {
         "total_jobs": len(merged_data),
-        "jobs": jobs.to_dict(orient="records")
+        "jobs": jobs.to_dict(orient="records"),
+        "suggested_jobs": suggested_jobs
     }

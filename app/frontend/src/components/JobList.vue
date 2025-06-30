@@ -56,15 +56,11 @@ export default {
       NProgress.start();
       this.loading = true;
       try {
-        const [jobsRes, suggestedRes] = await Promise.all([
-          fetch(`${process.env.VUE_APP_API_URL}/jobs?page=${this.page}&perPage=${this.perPage}`),
-          fetch(`${process.env.VUE_APP_API_URL}/suggested-jobs?perPage=5`)
-        ]);
-        const jobsData = await jobsRes.json();
-        const suggestedData = await suggestedRes.json();
-        this.jobs = jobsData.jobs;
-        this.totalJobs = jobsData.total_jobs;
-        this.suggestedJobs = suggestedData['suggested-jobs'];
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/jobs?page=${this.page}&perPage=${this.perPage}`);
+        const data = await res.json();
+        this.jobs = data.jobs;
+        this.totalJobs = data.total_jobs;
+        this.suggestedJobs = data.suggested_jobs;
       } catch (e) {
         console.error('Error loading jobs:', e);
       } finally {
