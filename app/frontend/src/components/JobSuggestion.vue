@@ -56,7 +56,7 @@ export default {
   background: #f4faff;
   border-radius: 8px;
   box-shadow: 0 1px 6px #0001;
-  width: 360px;
+  width: 400px;
   border: 1px solid #eee;
   font-family: Arial, sans-serif;
   padding: 0;
@@ -103,7 +103,7 @@ export default {
   overflow: visible;
   text-overflow: unset;
   text-align: left;
-  max-width: 250px;
+  max-width: 290px;
   word-break: break-word;
 }
 .company {
@@ -114,7 +114,7 @@ export default {
   overflow: visible;
   text-overflow: unset;
   text-align: left;
-  max-width: 250px;
+  max-width: 290px;
   word-break: break-word;
 }
 .tags {

@@ -121,7 +121,18 @@
     </div>
     <div class="company-section">
       <div class="company-header">
-        <div class="company-title">Thông tin về {{ jobDetail.company_name }}</div>
+        <div class="company-title">
+          Thông tin về
+          <router-link
+            :to="{
+              name: 'CompanyDetail',
+              query: { company_name: jobDetail.company_name }
+            }"
+            style="color:#1976d2;text-decoration:underline;cursor:pointer"
+          >
+            {{ jobDetail.company_name }}
+          </router-link>
+        </div>
         <a
           v-if="jobDetail.company_url"
           :href="parseStringToArray(jobDetail.company_url)[0]"
@@ -170,6 +181,18 @@
         >
           <img :src="img" alt="Ảnh công ty" />
         </div>
+      </div>
+      <div class="see-more-link-wrapper">
+        <router-link
+          v-if="jobDetail && jobDetail.company_name"
+          :to="{
+            name: 'CompanyDetail',
+            query: { company_name: jobDetail.company_name }
+          }"
+          class="see-more-link"
+        >
+          Xem thêm...
+        </router-link>
       </div>
     </div>
   </div>
@@ -630,6 +653,26 @@ export default {
   border-radius: 10px;
   font-weight: 500;
   max-width: 100%;
+}
+
+.see-more-link-wrapper {
+  width: 100%;
+  text-align: right;
+  margin-top: 18px;
+}
+
+.see-more-link {
+  display: inline-block;
+  color: #1976d2;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.see-more-link:hover {
+  color: #0d47a1;
 }
 
 </style>

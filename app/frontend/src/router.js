@@ -3,7 +3,7 @@ import HelloWorld from './components/HelloWorld.vue';
 import JobList from './components/JobList.vue';
 import JobDetail from './components/JobDetail.vue';
 import ProcessCV from './components/FindJobCV.vue';
-
+import CompanyDetail from './components/CompanyDetail.vue';
 
 const routes = [
   {
@@ -25,6 +25,11 @@ const routes = [
     path: '/process_cv',
     name: 'ProcessCV',
     component: ProcessCV,
+  },
+  {
+    path: '/company-detail',
+    name: 'CompanyDetail',
+    component: CompanyDetail,
   },
 ];
 

@@ -8,6 +8,7 @@ from typing import Dict
 from apis.get_jobs import get_jobs_endpoint
 from apis.get_suggested_jobs import get_suggested_jobs_endpoint
 from apis.get_job_detail import get_job_detail_endpoint
+from apis.get_company_detail import get_company_detail_endpoint
 from auth.oauth import router as oauth_router
 from rcm_job_from_cv import process_cv_logic
 from config.config import MONGO_URL
@@ -58,6 +59,10 @@ def get_suggested_jobs(perPage: int = Query(5, ge=1)) -> Dict:
 @app.get("/job-detail")
 def get_job_detail(job_title: str, company_name: str) -> Dict:
     return get_job_detail_endpoint(job_title, company_name)
+
+@app.get("/company-detail")
+def get_company_detail(company_name: str) -> dict:
+    return get_company_detail_endpoint(company_name)
 
 @app.post("/process_cv")
 async def process_cv(file: UploadFile = File(...)):
