@@ -3,7 +3,7 @@
   <div
     v-else
     class="job-list-layout"
-    style="display: flex; gap: 32px; padding: 32px 0 0 0; background: #f9f9f9;"
+    style="display: flex; gap: 32px; padding: 32px 0 0 0;"
   >
     <!-- LEFT COLUMN -->
     <div class="main-panel">
@@ -243,7 +243,7 @@ export default {
 
 <style scoped>
 .job-list-layout {
-  max-width: 1650px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
@@ -351,7 +351,7 @@ export default {
   padding: 28px 22px;
   border-radius: 16px;
   border: 1px solid #ddd;
-  max-width: 410px;
+  max-width: 500px;
   width: 100%;
   box-shadow: 0 1px 8px rgba(0,0,0,0.03);
   margin-right: 24px;

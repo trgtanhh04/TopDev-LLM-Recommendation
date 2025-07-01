@@ -302,7 +302,7 @@ export default {
   border-radius: 12px;
   box-shadow: 0 2px 12px #0001;
   padding: 28px 32px 18px 32px;
-  max-width: 1120px;
+  max-width: 1300px;
   margin: 32px auto;
   font-family: Arial, sans-serif;
 }

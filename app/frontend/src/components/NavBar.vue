@@ -7,7 +7,6 @@
       <ul class="nav-links">
         <li><router-link to="/">Trang chủ</router-link></li>
         <li><router-link to="/viec-lam-it">Việc làm</router-link></li>
-        <li><router-link to="/cong-ty">Công ty</router-link></li>
         <li><router-link to="/process_cv">Tìm việc làm</router-link></li>
       </ul>
       <div class="nav-actions">
@@ -103,7 +102,7 @@ export default {
 
 .nav-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -117,7 +116,7 @@ export default {
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  gap: 64px;
   list-style: none;
   margin: 0 auto;
   padding: 0;

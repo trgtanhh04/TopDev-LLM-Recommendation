@@ -55,9 +55,9 @@ def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> Dict
     return get_jobs_endpoint(page, perPage)
 
 @app.get("/suggested-home")
-def get_suggested_home(perPage: int = 24):
-    companies = get_suggested_companies_endpoint(perPage=perPage)["suggested_companies"]
-    jobs = get_suggested_jobs_endpoint(perPage=perPage)["suggested-jobs"]
+def get_suggested_home(perPage: int = 24, keyword: str = None):
+    companies = get_suggested_companies_endpoint(perPage=perPage, keyword=keyword)["suggested_companies"]
+    jobs = get_suggested_jobs_endpoint(perPage=perPage, keyword=keyword)["suggested-jobs"]
     return {
         "suggested_companies": companies,
         "suggested_jobs": jobs

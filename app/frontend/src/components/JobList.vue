@@ -86,7 +86,7 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   gap: 55px;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   width: 100%;
   justify-content: center;
