@@ -28,7 +28,7 @@
         <div class="info-icon">🏷️</div>
         <div>
           <div class="info-label">Industry</div>
-          <div class="info-value">{{ parseStringToArray(companyDetail.industry).join(', ') }}</div>
+          <div class="info-value">{{ parseStringToArray(companyDetail.industry)[0] }}</div>
         </div>
       </div>
       <div class="info-company-block">

@@ -4,6 +4,7 @@ import JobList from './components/JobList.vue';
 import JobDetail from './components/JobDetail.vue';
 import ProcessCV from './components/FindJobCV.vue';
 import CompanyDetail from './components/CompanyDetail.vue';
+import HomePage from './components/HomePage.vue';
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/company-detail',
     name: 'CompanyDetail',
     component: CompanyDetail,
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: HomePage,
   },
 ];
 

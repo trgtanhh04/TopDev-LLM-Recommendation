@@ -9,6 +9,7 @@ from apis.get_jobs import get_jobs_endpoint
 from apis.get_suggested_jobs import get_suggested_jobs_endpoint
 from apis.get_job_detail import get_job_detail_endpoint
 from apis.get_company_detail import get_company_detail_endpoint
+from apis.get_suggested_companies import get_suggested_companies_endpoint
 from auth.oauth import router as oauth_router
 from rcm_job_from_cv import process_cv_logic
 from config.config import MONGO_URL
@@ -55,6 +56,10 @@ def get_jobs(page: int = Query(1, ge=1), perPage: int = Query(10, ge=1)) -> Dict
 @app.get("/suggested-jobs")
 def get_suggested_jobs(perPage: int = Query(5, ge=1)) -> Dict:
     return get_suggested_jobs_endpoint(perPage)
+
+@app.get("/suggested-companies")
+def get_suggested_companies(perPage: int = 5):
+    return get_suggested_companies_endpoint(perPage)
 
 @app.get("/job-detail")
 def get_job_detail(job_title: str, company_name: str) -> Dict:
