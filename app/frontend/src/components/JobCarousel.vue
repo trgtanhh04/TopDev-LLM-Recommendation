@@ -90,6 +90,18 @@ export default {
   },
   methods: {
     parseStringToArray,
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.$('#jobCarousel').carousel({ interval: 5000, ride: 'carousel' });
+    });
+  },
+  watch: {
+    jobs() {
+      this.$nextTick(() => {
+        window.$('#jobCarousel').carousel({ interval: 5000, ride: 'carousel' });
+      });
+    }
   }
 };
 </script>

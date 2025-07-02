@@ -90,6 +90,19 @@ export default {
       const arr = this.parseStringToArray(img);
       return arr.length ? arr[0] : '';
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      // Set interval to 5 seconds (5000ms)
+      window.$('#companyCarousel').carousel({ interval: 5000, ride: 'carousel' });
+    });
+  },
+  watch: {
+    companies() {
+      this.$nextTick(() => {
+        window.$('#companyCarousel').carousel({ interval: 5000, ride: 'carousel' });
+      });
+    }
   }
 };
 </script>
