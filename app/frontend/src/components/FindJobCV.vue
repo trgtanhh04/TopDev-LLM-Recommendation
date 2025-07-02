@@ -40,13 +40,18 @@
 
       <!-- Pagination -->
       <div class="paging-controls">
-        <button :disabled="page === 1" @click="handlePageChange(page - 1)">
+        <button
+          :disabled="page === 1"
+          @click="handlePageChange(page - 1)"
+          class="paging-btn left"
+        >
           ← Trước
         </button>
-        <span>Trang {{ page }} / {{ totalPages }}</span>
+        <span class="page-indicator">Trang {{ page }} / {{ totalPages }}</span>
         <button
           :disabled="page >= totalPages"
           @click="handlePageChange(page + 1)"
+          class="paging-btn right"
         >
           Sau →
         </button>
@@ -148,6 +153,15 @@ export default {
       this.recommendedJobs = JSON.parse(jobs);
     }
   },
+  watch: {
+    '$route.query.page'(newPage) {
+      const pageNum = parseInt(newPage) || 1;
+      if (pageNum !== this.page) {
+        this.page = pageNum;
+        this.fetchJobs();
+      }
+    }
+  },
   methods: {
     async fetchJobs() {
       NProgress.start();
@@ -167,6 +181,7 @@ export default {
       }
     },
     handlePageChange(newPage) {
+      if (newPage < 1 || newPage > this.totalPages) return;
       this.$router.push({
         path: this.$route.path,
         query: { ...this.$route.query, page: newPage },
@@ -330,19 +345,37 @@ export default {
 
 .paging-controls {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 28px;
-  font-weight: bold;
+  justify-content: space-between;
+  max-width: 420px;
+  width: 100%;
+  margin: 24px auto 32px auto;
 }
 
-.paging-controls button {
-  padding: 8px 16px;
-  background-color: #e0e0e0;
-  border: none;
-  border-radius: 5px;
+.paging-btn {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid #1976d2;
+  background: #fff;
+  color: #1976d2;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s;
   font-size: 1.08rem;
+  min-width: 100px;
+}
+
+.paging-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  flex: 1;
+  text-align: center;
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: #222;
 }
 
 /* --- NEW STYLE FOR SUGGESTED JOBS LIKE IMAGE 2 --- */

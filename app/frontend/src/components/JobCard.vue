@@ -100,7 +100,7 @@ export default {
   padding: 12px;
 }
 .job-list-header {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   margin-bottom: 12px;
   text-align: left;
@@ -153,7 +153,7 @@ export default {
   width: 100%;
 }
 .job-title {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: bold;
   color: #222;
   display: block;
@@ -161,7 +161,7 @@ export default {
   text-align: left;
 }
 .company-name {
-  font-size: 15px;
+  font-size: 16px;
   color: #444;
   margin-bottom: 8px;
   text-align: left;
@@ -169,7 +169,7 @@ export default {
 .meta-row {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
   color: #222;
   margin-bottom: 4px;
   text-align: left;
@@ -189,7 +189,7 @@ export default {
   color: #222;
 }
 .address-row {
-  font-size: 14px;
+  font-size: 16px;
   color: #555;
   margin-bottom: 8px;
   text-align: left;
@@ -227,7 +227,7 @@ export default {
 }
 .date-posted {
   color: #888;
-  font-size: 13px;
+  font-size: 15px;
   text-align: right;
   margin-left: 8px;
   padding-right: 4px;

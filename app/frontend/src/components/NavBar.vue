@@ -2,7 +2,7 @@
   <nav class="nav-bar">
     <div class="nav-container">
       <div class="nav-logo">
-        <img src="@/assets/logo.png" alt="Logo" />
+        <img src="@/assets/topdev-logo.png" alt="TopDev Logo" />
       </div>
       <ul class="nav-links">
         <li><router-link to="/">Trang chủ</router-link></li>
