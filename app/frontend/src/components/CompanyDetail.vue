@@ -260,7 +260,8 @@ export default {
   margin: 36px 32px 36px 32px;
 }
 .profile-header {
-  margin-bottom: 6px;
+  margin-top: 18px;
+  margin-bottom: 8px;
   color: #d32f2f;
   font-size: 18px;
   font-weight: bold;

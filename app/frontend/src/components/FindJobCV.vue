@@ -281,7 +281,7 @@ export default {
 .upload-cv-section h2 {
   margin-bottom: 18px;
   color: #1976d2;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: -.5px;
 }
