@@ -1,6 +1,13 @@
 <template>
   <div class="loading-page">
     <div class="spinner"></div>
+    <div class="loading-message">
+      Đang tải dữ liệu, vui lòng chờ...
+      <br />
+      <span style="color:#1976d2;">
+        Nếu bạn phải chờ quá lâu, có thể backend đang khởi động.<br />
+      </span>
+    </div>
   </div>
 </template>
 
@@ -20,6 +27,12 @@
   height: 48px;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
+}
+.loading-message {
+  font-size: 1.08rem;
+  text-align: center;
+  margin-top: 8px;
+  max-width: 1300px;
 }
 @keyframes spin {
   0% { transform: rotate(0deg);}
