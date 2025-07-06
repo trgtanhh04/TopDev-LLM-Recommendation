@@ -36,6 +36,7 @@ Extract the following candidate information fields from the CV content (as plain
     }}
 ],
 
+"years_of_experience": "...",
 "skills": ["...", "..."],
 "certifications": [
     {{
