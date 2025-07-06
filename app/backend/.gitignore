@@ -13,3 +13,6 @@ venv/
 *.log
 *.tmp
 *__init__.py
+
+# Ignore database directory
+database/
