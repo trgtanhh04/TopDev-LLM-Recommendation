@@ -74,7 +74,7 @@ Note: Column names may be standardized later (e.g., posted_date → date_posted,
 4) Results:
    - Return top 10 jobs to UI; enable “Compare with CV” for score, missing skills, and learning path.
 
-Tip: Add an architecture/sequence diagram in docs/images/ and embed it here.
+![Architecture](https://res.cloudinary.com/dpfnbbiq4/image/upload/v1757825895/workflow_v57jkp.png)
 
 ---
 
@@ -183,6 +183,10 @@ Step 4 — Output:
 ### 6.4 Deployment
 - Backend: https://topdev-llm-recommendation-backend.onrender.com
 - Frontend: https://topdev-llm-recommendation-frontend.onrender.com
+
+![Dashboard](https://res.cloudinary.com/dpfnbbiq4/image/upload/v1757825895/uploadcv_i4kix6.jpg)
+
+![Dashboard](https://res.cloudinary.com/dpfnbbiq4/image/upload/v1757825895/advice_eeudrh.jpg)
 
 ---
 
