@@ -164,6 +164,8 @@ Step 4 — Output:
 - Compare CV vs JD to get score, gaps, and AI advice.
 - Support filtering, search, pagination, favorites.
 
+![Dashboard](https://res.cloudinary.com/dpfnbbiq4/image/upload/v1757825894/relationship_ihs4uc.png)
+
 ### 6.2 Backend
 - Python; Flask (current) / FastAPI (scalable option).
 - Responsibilities:
@@ -222,20 +224,12 @@ Step 4 — Output:
   - JD normalization (template + rule-based).
   - Stricter prompts; temperature=0.
   - Domain ontology and re-ranking rules.
+ 
+![Evaluate](https://res.cloudinary.com/dpfnbbiq4/image/upload/v1757825894/eval_qg9uj8.png)
 
 ---
 
-## 8. Limitations & Future Work
-- Limitations: CV/JD quality, domain shift, API cost/latency.
-- Future:
-  - Dedicated Vector DB (FAISS/Pinecone) at scale.
-  - Better extraction (NER/RE: spaCy/transformers).
-  - VI-specific tuning; hybrid retrieval (BM25+dense).
-  - Explainability (JD/CV highlights), RBAC/multi-tenant, analytics.
-
----
-
-## 9. Resources & Deployment
+## 8. Resources & Deployment
 - Demo (Frontend): https://topdev-llm-recommendation-frontend.onrender.com
 - Backend: https://topdev-llm-recommendation-backend.onrender.com
 - Mistral API: mistral-medium, chat completions endpoint.
@@ -243,31 +237,3 @@ Step 4 — Output:
 
 ---
 
-## Appendix
-
-### A. Original CV extraction prompt (compact)
-```
-Extract the following candidate information fields from the CV content (as plain text) below in the exact JSON format:
-{
-"full_name": "...",
-"email": "...",
-"phone": "...",
-"job_title": "...",
-"education": [
-  { "degree": "...", "university": "...", "start_year": ..., "end_year": ... }
-],
-"experience": [
-  { "job_title": "...", "company": "...", "start_date": "...", "end_date": "...", "description": "..." }
-],
-"skills": ["...", "..."],
-"certifications": [
-  { "certificate_name": "...", "organization": "..." }
-],
-"languages": ["...", "..."]
-}
-```
-
-### B. Recommended LLM settings
-- temperature = 0, top_p = 1 (deterministic JSON).
-- Strip code fences if present before parsing.
-- Validate against JSON Schema; on error, re-prompt with a short validation message.
