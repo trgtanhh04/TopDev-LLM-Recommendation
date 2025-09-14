@@ -1,4 +1,4 @@
-# Project Report: LLM-powered Job Recommendation and CV–JD Matching
+# LLM-powered Job Recommendation and CV–JD Matching
 
 ## 1. Introduction
 
@@ -41,8 +41,6 @@ Online job search is noisy; candidates (especially fresh graduates) struggle to 
 |13 | job_description      | object   | JD text |
 |14 | company_url          | object   | Company URL |
 |15 | url                  | object   | Job URL |
-
-Note: Column names may be standardized later (e.g., posted_date → date_posted, years_experience → experience_years, url → job_url). Keep consistent across the pipeline.
 
 ---
 
